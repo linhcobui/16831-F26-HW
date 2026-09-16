@@ -1,0 +1,38 @@
+[workspace]
+name = "rob831"
+channels = ["conda-forge"]
+platforms = ["osx-arm64", "linux-64"]
+
+[dependencies]
+python = "3.10.*"
+glfw = "*"
+# mujoco-py compiles with -fopenmp, which Apple clang lacks
+c-compiler = "*"
+llvm-openmp = "*"
+
+[pypi-dependencies]
+numpy = "==1.25.2"
+torch = "==1.12.1"
+gym = "==0.25.1"
+mujoco = "==2.2.1"
+# Ant-v2 etc. need mujoco-py (MuJoCo 2.1 at ~/.mujoco/mujoco210); it only builds with Cython < 3
+mujoco-py = "==2.1.2.14"
+cython = "<3"
+tensorboard = "==2.10.0"
+tensorboardX = "==2.5.1"
+protobuf = "<3.20"
+matplotlib = ">=3.8,<3.10"
+moviepy = "==1.0.3"
+ipython = "*"
+ipykernel = "*"
+rob831 = { path = ".", editable = true }
+
+[activation.env]
+MUJOCO_PY_MUJOCO_PATH = "$HOME/.mujoco/mujoco210"
+CC = "$CONDA_PREFIX/bin/arm64-apple-darwin20.0.0-clang"
+CFLAGS ="-Wno-incompatible-pointer-types -I$CONDA_PREFIX/include"
+LDFLAGS = "-L$CONDA_PREFIX/lib -Wl,-rpath,$CONDA_PREFIX/lib"
+
+[tasks]
+test-env = "python -c \"import gym; env = gym.make('Ant-v2'); print(env.reset().shape); env.close()\""
+tensorboard = "python -m tensorboard.main --logdir data"
