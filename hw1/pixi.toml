@@ -19,6 +19,8 @@ mujoco = "==2.2.1"
 mujoco-py = "==2.1.2.14"
 cython = "<3"
 tensorboard = "==2.10.0"
+# tensorboard 2.10 imports pkg_resources, dropped in setuptools 81
+setuptools = "<81"
 tensorboardX = "==2.5.1"
 protobuf = "<3.20"
 matplotlib = ">=3.8,<3.10"
